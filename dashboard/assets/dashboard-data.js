@@ -140,11 +140,7 @@ window.DASHBOARD_DATA = {
   },
   "eda": {
     "assessment_status": "failed",
-    "executed_ids": [
-      "prediction_timing",
-      "label_observability",
-      "preprocessing_lineage"
-    ],
+    "executed_ids": [],
     "results": [
       {
         "block": "schema",
@@ -2757,7 +2753,10 @@ window.DASHBOARD_DATA = {
       "schema",
       "patient_overlap",
       "demographics",
-      "cohort"
+      "cohort",
+      "prediction_timing",
+      "label_observability",
+      "preprocessing_lineage"
     ]
   },
   "evaluation_plan": {
@@ -2766,34 +2765,12 @@ window.DASHBOARD_DATA = {
       {
         "blocked_reasons": [],
         "evidence": [
-          "objectives.evaluation",
-          "probability_output_planned",
-          "required.patient_overlap.status"
-        ],
-        "id": "roc_auc",
-        "reason": "설정된 기본 정책에 포함된 블록입니다. 추가 매개변수 없이 계산 가능한 순위 판별력 지표입니다. 분할 간 환자 중복(required.patient_overlap.status=failed)과 비독립 검증 한계 때문에 낙관적일 수 있어 교육용 참고로만 해석해야 합니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
-        "required": false,
-        "requires": [
-          "y_true",
-          "y_probability"
-        ],
-        "requires_context": [],
-        "requires_parameters": [],
-        "sources": [
-          "default",
-          "ai"
-        ],
-        "state": "eligible_planned_inputs"
-      },
-      {
-        "blocked_reasons": [],
-        "evidence": [
-          "coordinated.cohort",
+          "required.patient_overlap.overlaps",
           "labels_planned",
           "probability_output_planned"
         ],
-        "id": "average_precision",
-        "reason": "설정된 기본 정책에 포함된 블록입니다. 재입원 사건률이 약 11%로 불균형이어서 양성 중심 평가가 필요합니다. 임계값 없이 계산 가능하나 환자 중복·타깃 인코딩 한계로 일반화 성능을 보증하지 않습니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "id": "roc_auc",
+        "reason": "설정된 기본 정책에 포함된 블록입니다. 전반적 판별력을 보는 기본 지표입니다. 양쪽 클래스가 모두 있고 확률 출력이 계획되어 계산 가능하나, split 간 환자 중복(5055/5086/1760)으로 낙관적일 수 있습니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
         "required": false,
         "requires": [
           "y_true",
@@ -2810,12 +2787,34 @@ window.DASHBOARD_DATA = {
       {
         "blocked_reasons": [],
         "evidence": [
+          "split_counts",
           "objectives.evaluation",
-          "coordinated.label_observability",
+          "probability_output_planned"
+        ],
+        "id": "average_precision",
+        "reason": "설정된 기본 정책에 포함된 블록입니다. 사람 피드백의 주지표 요청입니다. 재입원 비율이 약 11%로 불균형이라 양성 중심 순위 성능을 보기에 적합합니다. 계산은 아직 수행하지 않았고 독립 임상 검증이 아니며 환자 중복 한계가 있습니다. 사용자가 추가로 선택한 블록입니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "required": false,
+        "requires": [
+          "y_true",
+          "y_probability"
+        ],
+        "requires_context": [],
+        "requires_parameters": [],
+        "sources": [
+          "default",
+          "ai",
+          "user"
+        ],
+        "state": "eligible_planned_inputs"
+      },
+      {
+        "blocked_reasons": [],
+        "evidence": [
+          "objectives.evaluation",
           "probability_output_planned"
         ],
         "id": "brier_score",
-        "reason": "설정된 기본 정책에 포함된 블록입니다. 확률 품질 목적에 맞는 임계값 불필요 지표입니다. 라벨 관측 한계로 0 라벨 일부가 오분류일 수 있어 절대 수치 해석에 주의가 필요합니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "reason": "설정된 기본 정책에 포함된 블록입니다. 확률 품질 목적에 맞는 기본 지표입니다. 현재 데이터는 독립 환자 단위 holdout이 아니므로 해석에 주의가 필요합니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
         "required": false,
         "requires": [
           "y_true",
@@ -2832,12 +2831,11 @@ window.DASHBOARD_DATA = {
       {
         "blocked_reasons": [],
         "evidence": [
-          "objectives.evaluation",
           "parameters.n_bins_defined",
-          "coordinated.demographics"
+          "probability_output_planned"
         ],
         "id": "calibration_curve",
-        "reason": "설정된 기본 정책에 포함된 블록입니다. 확률 보정 확인용이며 n_bins 기본값 10을 쓸 수 있어 사람의 매개변수 확정이 필요 없습니다. 하위 집단·고위험 구간 표본이 작아 구간 추정이 불안정할 수 있습니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "reason": "설정된 기본 정책에 포함된 블록입니다. 확률 보정 확인용 기본 지표입니다. n_bins는 지정되지 않아 기본값만 가능하며 소규모 구간은 불안정할 수 있습니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
         "required": false,
         "requires": [
           "y_true",
@@ -2848,31 +2846,106 @@ window.DASHBOARD_DATA = {
         "sources": [
           "default",
           "ai"
+        ],
+        "state": "eligible_planned_inputs"
+      },
+      {
+        "blocked_reasons": [],
+        "evidence": [
+          "parameters.threshold_defined",
+          "objectives.evaluation"
+        ],
+        "id": "f1",
+        "reason": "사람 피드백으로 추가된 임계값 지표입니다. threshold 0.5는 교육용 실습 값이며 임상 표준이나 최적값이 아닙니다. 사용자가 추가로 선택한 블록입니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "required": false,
+        "requires": [
+          "y_true",
+          "y_probability"
+        ],
+        "requires_context": [],
+        "requires_parameters": [
+          "threshold"
+        ],
+        "sources": [
+          "ai",
+          "user"
+        ],
+        "state": "eligible_planned_inputs"
+      },
+      {
+        "blocked_reasons": [],
+        "evidence": [
+          "parameters.threshold_defined",
+          "clinical_action_defined"
+        ],
+        "id": "recall",
+        "reason": "사람 피드백으로 추가되었으며 교육용 threshold 0.5에서 실제 재입원 포착 비율을 봅니다. 임상 행동은 정해지지 않았습니다. 사용자가 추가로 선택한 블록입니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "required": false,
+        "requires": [
+          "y_true",
+          "y_probability"
+        ],
+        "requires_context": [],
+        "requires_parameters": [
+          "threshold"
+        ],
+        "sources": [
+          "ai",
+          "user"
+        ],
+        "state": "eligible_planned_inputs"
+      },
+      {
+        "blocked_reasons": [],
+        "evidence": [
+          "parameters.threshold_defined",
+          "split_counts"
+        ],
+        "id": "precision",
+        "reason": "사람 피드백으로 추가되었으며 threshold 0.5의 양성 예측 정밀도를 봅니다. 임계값은 교육용이며 최적화 결과가 아닙니다. 사용자가 추가로 선택한 블록입니다. 입력은 이후 생성할 계획이며 아직 계산하지 않았습니다. 실제 지표 실행 시 행 정합과 수학적 요건을 다시 검증합니다.",
+        "required": false,
+        "requires": [
+          "y_true",
+          "y_probability"
+        ],
+        "requires_context": [],
+        "requires_parameters": [
+          "threshold"
+        ],
+        "sources": [
+          "ai",
+          "user"
         ],
         "state": "eligible_planned_inputs"
       }
     ],
     "objectives": [
       "discrimination",
-      "probability_quality"
+      "probability_quality",
+      "threshold_performance"
     ],
-    "parameters": {},
+    "parameters": {
+      "threshold": 0.5
+    },
     "planning_complete": true,
-    "primary_metric": null,
+    "primary_metric": "average_precision",
     "selected_ids": [
       "roc_auc",
       "average_precision",
       "brier_score",
-      "calibration_curve"
+      "calibration_curve",
+      "f1",
+      "recall",
+      "precision"
     ],
-    "threshold": null
+    "threshold": 0.5
   },
-  "generated_at": "2026-10-18T15:10:09.030384+00:00",
+  "generated_at": "2026-10-18T15:15:10.096275+00:00",
   "local_smoke": null,
   "pipeline": {
     "issue_number": 1,
     "repository": "t-hajongkim/Medical-ML-SDLC-Test-6",
-    "source_run": "39139201238",
+    "source_run": "39139225513",
     "stage": "evaluation-plan",
     "status": "success"
   },
@@ -2880,13 +2953,13 @@ window.DASHBOARD_DATA = {
   "remote_model_evaluation": null,
   "remote_pr1": {
     "code_commit": "2031fadb39e210a52fdedd29f815ef47c7cde804",
-    "head": "170f12eb568b2d58437e8008acbcc494c1298e38",
+    "head": "0e28d36ca3f477cff6c99fb54fd76795c278c2ca",
     "issue": 1,
     "merge_at": null,
     "merge_commit": null,
     "pr": 2,
     "repository": "t-hajongkim/Medical-ML-SDLC-Test-6",
-    "source_run": "39138578512",
+    "source_run": "39139225513",
     "status": "open",
     "url": "https://github.com/t-hajongkim/Medical-ML-SDLC-Test-6/pull/2"
   },
