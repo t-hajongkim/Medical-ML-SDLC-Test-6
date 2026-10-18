@@ -2867,12 +2867,12 @@
     ],
     "threshold": null
   },
-  "generated_at": "2026-10-18T15:07:35.790483+00:00",
+  "generated_at": "2026-10-18T15:10:09.030384+00:00",
   "local_smoke": null,
   "pipeline": {
     "issue_number": 1,
     "repository": "t-hajongkim/Medical-ML-SDLC-Test-6",
-    "source_run": "39138578512",
+    "source_run": "39139201238",
     "stage": "evaluation-plan",
     "status": "success"
   },
@@ -2880,7 +2880,7 @@
   "remote_model_evaluation": null,
   "remote_pr1": {
     "code_commit": "2031fadb39e210a52fdedd29f815ef47c7cde804",
-    "head": "2af9942a1a4de1d5a034a832ad050539d0728e95",
+    "head": "170f12eb568b2d58437e8008acbcc494c1298e38",
     "issue": 1,
     "merge_at": null,
     "merge_commit": null,
