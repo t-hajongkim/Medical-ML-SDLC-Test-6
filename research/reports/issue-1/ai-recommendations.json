@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "provider": "github-copilot-cloud-agent",
+  "context_hash": "56bc74bf862a96a2946ee463d2356c48a514fe7e71a995399604bee89360af11",
+  "status": "provided",
+  "eda": [
+    {
+      "id": "prediction_timing",
+      "reason": "이미 검증·완료된 선택입니다. 예측 시점과 특성 가용성 선언이 없어 확인 불가이며, 퇴원·재원 정보 후보 특성은 이름 기반 선별일 뿐 누수 증명이 아닙니다. 새 점검을 추가하지 않습니다.",
+      "evidence": [
+        "coordinated.prediction_timing",
+        "objectives.eda"
+      ]
+    },
+    {
+      "id": "label_observability",
+      "reason": "이미 검증된 선택입니다. 정답 인코딩은 통과했으나 원본 라벨 정렬, 추적 완료성, 외부 병원 재입원 포착은 확인 불가라 target 0이 무사건 추적을 뜻하지 않습니다.",
+      "evidence": [
+        "coordinated.label_observability",
+        "target"
+      ]
+    },
+    {
+      "id": "preprocessing_lineage",
+      "reason": "이미 검증된 선택입니다. 대치·표준화·타깃 인코딩의 과거 적합 범위가 확인 불가이고 공개 validation은 독립 holdout이 아니어서 누수 없음 주장은 보류합니다.",
+      "evidence": [
+        "coordinated.preprocessing_lineage",
+        "required.patient_overlap.status"
+      ]
+    }
+  ],
+  "evaluation": [
+    {
+      "id": "average_precision",
+      "reason": "사람 피드백의 주지표 요청입니다. 재입원 비율이 약 11%로 불균형이라 양성 중심 순위 성능을 보기에 적합합니다. 계산은 아직 수행하지 않았고 독립 임상 검증이 아니며 환자 중복 한계가 있습니다.",
+      "evidence": [
+        "split_counts",
+        "objectives.evaluation",
+        "probability_output_planned"
+      ]
+    },
+    {
+      "id": "roc_auc",
+      "reason": "전반적 판별력을 보는 기본 지표입니다. 양쪽 클래스가 모두 있고 확률 출력이 계획되어 계산 가능하나, split 간 환자 중복(5055/5086/1760)으로 낙관적일 수 있습니다.",
+      "evidence": [
+        "required.patient_overlap.overlaps",
+        "labels_planned",
+        "probability_output_planned"
+      ]
+    },
+    {
+      "id": "brier_score",
+      "reason": "확률 품질 목적에 맞는 기본 지표입니다. 현재 데이터는 독립 환자 단위 holdout이 아니므로 해석에 주의가 필요합니다.",
+      "evidence": [
+        "objectives.evaluation",
+        "probability_output_planned"
+      ]
+    },
+    {
+      "id": "calibration_curve",
+      "reason": "확률 보정 확인용 기본 지표입니다. n_bins는 지정되지 않아 기본값만 가능하며 소규모 구간은 불안정할 수 있습니다.",
+      "evidence": [
+        "parameters.n_bins_defined",
+        "probability_output_planned"
+      ]
+    },
+    {
+      "id": "f1",
+      "reason": "사람 피드백으로 추가된 임계값 지표입니다. threshold 0.5는 교육용 실습 값이며 임상 표준이나 최적값이 아닙니다.",
+      "evidence": [
+        "parameters.threshold_defined",
+        "objectives.evaluation"
+      ]
+    },
+    {
+      "id": "recall",
+      "reason": "사람 피드백으로 추가되었으며 교육용 threshold 0.5에서 실제 재입원 포착 비율을 봅니다. 임상 행동은 정해지지 않았습니다.",
+      "evidence": [
+        "parameters.threshold_defined",
+        "clinical_action_defined"
+      ]
+    },
+    {
+      "id": "precision",
+      "reason": "사람 피드백으로 추가되었으며 threshold 0.5의 양성 예측 정밀도를 봅니다. 임계값은 교육용이며 최적화 결과가 아닙니다.",
+      "evidence": [
+        "parameters.threshold_defined",
+        "split_counts"
+      ]
+    }
+  ]
+}

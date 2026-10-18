@@ -1,0 +1,14 @@
+{
+  "comments": [
+    {
+      "actor": "t-hajongkim",
+      "body_sha256": "a08eaa89a96dac9006aa360c400d971634274f352353a3f84b4fa65da7bdf8cf",
+      "comment_id": 6251491460
+    }
+  ],
+  "issue_number": 1,
+  "kind": "pr1-natural-feedback",
+  "pull_request": 2,
+  "repository": "t-hajongkim/Medical-ML-SDLC-Test-6",
+  "schema_version": 1
+}
