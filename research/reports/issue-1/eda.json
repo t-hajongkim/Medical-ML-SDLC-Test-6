@@ -2642,20 +2642,19 @@
   },
   "execution_plan_hash": "78aac61809d8b8cd173d6e73bbcdac67387edd8f3499a331bce9c1a9a392010e",
   "execution_mode": "registered_execution_plan",
-  "executed_ids": [
-    "prediction_timing",
-    "label_observability",
-    "preprocessing_lineage"
-  ],
+  "executed_ids": [],
   "reused_ids": [
     "schema",
     "patient_overlap",
     "demographics",
-    "cohort"
+    "cohort",
+    "prediction_timing",
+    "label_observability",
+    "preprocessing_lineage"
   ],
   "initial_execution_plan_hash": "b3c3e7e53d1003b5c7f48469524aaafa35f1e41a3d8b7846ef81c062287109a7",
   "execution_result_hash": "cb90a3a69e36e03df1edb6174f84b964cd4b19b5270cc4dbaf33b5a32d3f89f6",
-  "coordination_hash": "bf918a1192036820d4921d7053b8e5fdfadfd99bb1ec662159c2a5a4d8c4c260",
+  "coordination_hash": "3c4cdd18023ca2514c5f83f5cbc35485befddcd8840b855860ffc82c69b890db",
   "research_request_hash": "2cad89531aae76c60e6ec039733a519d1c6376e99b585f8af81030d11b707b1a",
   "coordination_evidence": {
     "schema": {
@@ -5262,7 +5261,7 @@
     "data_image": "ghcr.io/t-hajongkim/medical-ml-sdlc-db@sha256:a81f2187eaac6b465b3443df423ee369ab7e7cd216e71ab9c0a4aeb8a88ab947",
     "model_image": "ghcr.io/t-hajongkim/medical-ml-sdlc-model@sha256:1617d5200111f0529d29d4a59517177dc6eb6cc5bf4a5ba88408c1cd83f8ee38",
     "code_commit": "2031fadb39e210a52fdedd29f815ef47c7cde804",
-    "workflow_run_url": "https://github.com/t-hajongkim/Medical-ML-SDLC-Test-6/actions/runs/39138578512",
+    "workflow_run_url": "https://github.com/t-hajongkim/Medical-ML-SDLC-Test-6/actions/runs/39139225513",
     "data_access": "Validated prepared files; cached blocks explicitly reused; no database or model execution.",
     "planning_metadata_mock": false
   }
